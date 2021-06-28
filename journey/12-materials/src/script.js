@@ -4,6 +4,22 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 //Protip substitute PlaneBuferGeometry with PlaneGeometry, so no buffer
 
+/*
+* Textures
+*/
+const textureLoader = new THREE.TextureLoader()
+
+const doorColorTexture = textureLoader.load('/textures/door/color.jpg')
+const doorAlphaTexture = textureLoader.load('/textures/door/alpha.jpg')
+const doorAmbienOcclusionTexture = textureLoader.load('/textures/door/ambientOcclusion.jpg')
+const doorHeighTexture = textureLoader.load('/textures/door/height.jpg')
+const doorMetalnessTexture = textureLoader.load('/textures/door/metalness.jpg')
+const doorNormalTexture = textureLoader.load('/textures/door/normal.jpg')
+const doorRoughnessTexture = textureLoader.load('/textures/door/roughness.jpg')
+const matcapTexture = textureLoader.load('/textures/matcaps/1.png')
+const gradinetTexture = textureLoader.load('/textures/matcaps/3.png')
+
+
 /**
  * Base
  */
@@ -17,12 +33,21 @@ const scene = new THREE.Scene()
  * Objects
  */
 
-const material = new THREE.MeshBasicMaterial()
+/*const material = new THREE.MeshBasicMaterial()
+material.map = doorColorTexture
+//material.color = new THREE.Color(0x00ff00)
+//material.opacity = 0.5
+material.transparent = true
+material.alphaMap = doorAlphaTexture
+material.side = THREE.BackSide*/
+
+const material = new THREE.MeshNormalMaterial()
 
 const sphere = new THREE.Mesh(
     new THREE.SphereBufferGeometry(0.5, 16, 16),
     material
 )
+
 sphere.position.x = -1.5
 
 const plane = new THREE.Mesh(
@@ -93,6 +118,14 @@ const clock = new THREE.Clock()
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
+
+    sphere.rotation.y = 0.1 * elapsedTime
+    plane.rotation.y = 0.1 * elapsedTime
+    torus.rotation.y = 0.1 * elapsedTime
+
+    sphere.rotation.x = 0.15 * elapsedTime
+    plane.rotation.x = 0.15 * elapsedTime
+    torus.rotation.x = 0.15 * elapsedTime
 
     // Update controls
     controls.update()
